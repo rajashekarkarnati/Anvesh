@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Training_20Feb_MumbaiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AdminLogin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="adminUsername" Type="varchar" MaxLength="10" />
+          <Property Name="adminpassword" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Fees">
+          <Key>
+            <PropertyRef Name="feesid" />
+          </Key>
+          <Property Name="feesid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentId" Type="int" />
+          <Property Name="Branch" Type="nvarchar" MaxLength="10" />
+          <Property Name="Year" Type="varchar" MaxLength="5" />
+          <Property Name="Amount" Type="bigint" />
+          <Property Name="Paid" Type="varchar" MaxLength="10" />
+          <Property Name="Balance" Type="bigint" />
+        </EntityType>
+        <EntityType Name="FeeStructure">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="year" Type="varchar" MaxLength="5" />
+          <Property Name="Branch" Type="nvarchar" MaxLength="10" />
+          <Property Name="Amount" Type="bigint" />
+        </EntityType>
+        <EntityType Name="StaffDetails">
+          <Key>
+            <PropertyRef Name="StaffId" />
+          </Key>
+          <Property Name="StaffId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" />
+          <Property Name="Gender" Type="char" MaxLength="1" />
+          <Property Name="City" Type="varchar" MaxLength="20" />
+          <Property Name="Experience" Type="int" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="10" />
+          <Property Name="Salary" Type="bigint" />
+          <Property Name="subject" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="StudentDetails">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" />
+          <Property Name="Gender" Type="char" MaxLength="1" />
+          <Property Name="Branch" Type="nvarchar" MaxLength="10" />
+          <Property Name="year" Type="varchar" MaxLength="5" />
+          <Property Name="DateofBirth" Type="date" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="10" />
+          <Property Name="Addrees" Type="varchar" MaxLength="500" />
+          <Property Name="feesAmount" Type="bigint" />
+        </EntityType>
+        <Association Name="FK__Fees__StudentId__124C06A0">
+          <End Role="StudentDetails" Type="Self.StudentDetails" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Fees" Type="Self.Fees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentDetails">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="Fees">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Training_20Feb_MumbaiModelStoreContainer">
+          <EntitySet Name="AdminLogin" EntityType="Self.AdminLogin" Schema="StudentStaffDetailsAutomation" store:Type="Tables" />
+          <EntitySet Name="Fees" EntityType="Self.Fees" Schema="StudentStaffDetailsAutomation" store:Type="Tables" />
+          <EntitySet Name="FeeStructure" EntityType="Self.FeeStructure" Schema="StudentStaffDetailsAutomation" store:Type="Tables" />
+          <EntitySet Name="StaffDetails" EntityType="Self.StaffDetails" Schema="StudentStaffDetailsAutomation" store:Type="Tables" />
+          <EntitySet Name="StudentDetails" EntityType="Self.StudentDetails" Schema="StudentStaffDetailsAutomation" store:Type="Tables" />
+          <AssociationSet Name="FK__Fees__StudentId__124C06A0" Association="Self.FK__Fees__StudentId__124C06A0">
+            <End Role="StudentDetails" EntitySet="StudentDetails" />
+            <End Role="Fees" EntitySet="Fees" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Training_20Feb_MumbaiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AdminLogin">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="adminUsername" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="adminpassword" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Fee">
+          <Key>
+            <PropertyRef Name="feesid" />
+          </Key>
+          <Property Name="feesid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentId" Type="Int32" />
+          <Property Name="Amount" Type="Int64" />
+          <Property Name="Paid" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Balance" Type="Int64" />
+          <NavigationProperty Name="StudentDetail" Relationship="Self.FK__Fees__StudentId__60B4AB0C" FromRole="Fees" ToRole="StudentDetails" />
+          <Property Name="Branch" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Year" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StaffDetail">
+          <Key>
+            <PropertyRef Name="StaffId" />
+          </Key>
+          <Property Name="StaffId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Experience" Type="Int32" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Salary" Type="Int64" />
+          <Property Name="subject" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StudentDetail">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Branch" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="year" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="DateofBirth" Type="DateTime" Precision="0" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Addrees" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Fees" Relationship="Self.FK__Fees__StudentId__60B4AB0C" FromRole="StudentDetails" ToRole="Fees" />
+          <Property Name="feesAmount" Type="Int64" />
+        </EntityType>
+        <Association Name="FK__Fees__StudentId__60B4AB0C">
+          <End Role="StudentDetails" Type="Self.StudentDetail" Multiplicity="0..1" />
+          <End Role="Fees" Type="Self.Fee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StudentDetails">
+              <PropertyRef Name="StudentId" />
+            </Principal>
+            <Dependent Role="Fees">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Training_20Feb_MumbaiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AdminLogins" EntityType="Self.AdminLogin" />
+          <EntitySet Name="Fees" EntityType="Self.Fee" />
+          <EntitySet Name="StaffDetails" EntityType="Self.StaffDetail" />
+          <EntitySet Name="StudentDetails" EntityType="Self.StudentDetail" />
+          <AssociationSet Name="FK__Fees__StudentId__60B4AB0C" Association="Self.FK__Fees__StudentId__60B4AB0C">
+            <End Role="StudentDetails" EntitySet="StudentDetails" />
+            <End Role="Fees" EntitySet="Fees" />
+          </AssociationSet>
+          <EntitySet Name="FeeStructures" EntityType="Training_20Feb_MumbaiModel.FeeStructure" />
+        </EntityContainer>
+        <EntityType Name="FeeStructure">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="year" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Branch" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Int64" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Training_20Feb_MumbaiModelStoreContainer" CdmEntityContainer="Training_20Feb_MumbaiEntities">
+          <EntitySetMapping Name="AdminLogins">
+            <EntityTypeMapping TypeName="Training_20Feb_MumbaiModel.AdminLogin">
+              <MappingFragment StoreEntitySet="AdminLogin">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="adminUsername" ColumnName="adminUsername" />
+                <ScalarProperty Name="adminpassword" ColumnName="adminpassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fees">
+            <EntityTypeMapping TypeName="Training_20Feb_MumbaiModel.Fee">
+              <MappingFragment StoreEntitySet="Fees">
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Branch" ColumnName="Branch" />
+                <ScalarProperty Name="feesid" ColumnName="feesid" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StaffDetails">
+            <EntityTypeMapping TypeName="Training_20Feb_MumbaiModel.StaffDetail">
+              <MappingFragment StoreEntitySet="StaffDetails">
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Experience" ColumnName="Experience" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentDetails">
+            <EntityTypeMapping TypeName="Training_20Feb_MumbaiModel.StudentDetail">
+              <MappingFragment StoreEntitySet="StudentDetails">
+                <ScalarProperty Name="feesAmount" ColumnName="feesAmount" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Branch" ColumnName="Branch" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Addrees" ColumnName="Addrees" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FeeStructures">
+            <EntityTypeMapping TypeName="Training_20Feb_MumbaiModel.FeeStructure">
+              <MappingFragment StoreEntitySet="FeeStructure">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Branch" ColumnName="Branch" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

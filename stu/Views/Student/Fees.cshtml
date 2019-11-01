@@ -1,0 +1,51 @@
+﻿@model IEnumerable<StudentStaffApp.Models.Fee>
+
+@{
+    ViewBag.Title = "Fees";
+}
+
+<font face="cursive,serif" color="#ff9900" style="text-align:center;">
+    <h2>Fees</h2>
+</font>
+
+<div>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentDetail.StudentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentDetail.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentDetail.StudentId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentDetail.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Balance)
+                </td>
+                <td>
+                    @Html.ActionLink("Pay", "PayFees", new { id = item.feesid }, new { @class = "btn btn-info" }) 
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

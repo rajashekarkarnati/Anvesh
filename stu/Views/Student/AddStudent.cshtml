@@ -1,0 +1,144 @@
+﻿@model StudentStaffApp.Models.StudentDetail
+
+@{
+    ViewBag.Title = "AddStudent";
+}
+
+
+<font face="cursive,serif" color="#ff9900" style="text-align:center;">
+    <h2>Add Student</h2>
+</font>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <span><input type="radio" value="M" name="Gender" required />Male</span>
+                <span><input type="radio" value="F" name="Gender" required />Female</span>
+                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Branch, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Branch, new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "CSE", Value = "CSE"},
+                    new SelectListItem { Text = "EEE", Value = "EEE"} ,
+                    new SelectListItem { Text = "ECE", Value = "ECE" },
+                    new SelectListItem { Text = "MECH", Value = "MECH" },
+                    new SelectListItem { Text = "CIVIL", Value = "CIVIL" } },
+                    "Select Branch", new { @class = "form-control", @id = "branch" }
+                )
+                @Html.ValidationMessageFor(model => model.Branch, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.year, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.year, new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "1", Value = "1"},
+                    new SelectListItem { Text = "2", Value = "2"} ,
+                    new SelectListItem { Text = "3", Value = "3" },
+                    new SelectListItem { Text = "4", Value = "4" } },
+                    "Select year", new { @class = "form-control", @id = "year" }
+                )
+                @Html.ValidationMessageFor(model => model.year, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateofBirth, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DateofBirth, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                @Html.ValidationMessageFor(model => model.DateofBirth, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Addrees, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Addrees, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Addrees, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.feesAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.feesAmount, new { htmlAttributes = new { @class = "form-control", @id = "fees", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.feesAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $("#year").change(function () {
+            var year = this.value;
+            var branch = $('#branch').val();
+            if (year != '' && branch != '') {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetFeesByYear", "Student")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ 'year': year, 'branch': branch }),
+                    dataType: "json",
+                    success: function (data) { $("#fees").val(data.fees); },
+                    error: function (data) { alert("Error"); }
+                });
+            }
+        });
+
+        $("#branch").change(function () {
+            var branch = this.value;
+            var year = $('#year').val();
+            if (year != '' && branch != '') {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetFeesByBranch", "Student")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ 'year': year, 'branch': branch }),
+                    dataType: "json",
+                    success: function (data) { $("#fees").val(data.fees); },
+                    error: function (data) { alert("Error"); }
+                });
+            }
+        });
+    </script>
+}

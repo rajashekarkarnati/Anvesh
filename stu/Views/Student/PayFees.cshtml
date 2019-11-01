@@ -1,0 +1,95 @@
+﻿@model StudentStaffApp.Models.Fee
+
+@{
+    ViewBag.Title = "PayFees";
+}
+
+<h2>PayFees</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <input type="hidden" id="feeid" value="@Model.feesid" />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StudentId, "StudentId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StudentDetail.StudentId, new { htmlAttributes = new { @class = "form-control", @id = "StudentId", @required = "required", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.StudentId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @id = "Amount", @required = "required", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Balance, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Balance, new { htmlAttributes = new { @class = "form-control", @id = "balance", @required = "required", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.Balance, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class = "control-label col-md-2">Paying Amount</label>
+            <div class="col-md-10">
+                <input type="number" id="payingamount" required />
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" id="btnSubmit" value="Pay" class="btn btn-outline-success" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $('#btnSubmit').click(function (event) {
+        var feeid = $('#feeid').val();
+        var amt = parseInt($('#payingamount').val());
+        var balance = parseInt($('#balance').val());
+        if (amt != "") {
+            if (amt <= balance) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Student/PayFees",
+                    data: JSON.stringify({ 'id': feeid, 'amt': amt }),
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        alert("Successfully Paid");
+                        window.location.href = "/Student/Fees";
+                    },
+                    error: function () {
+                        alert("Error occured!!")
+                    }
+                });
+            }
+            else {
+                alert("payAmount must be less than Balance");
+            }
+        }
+            else {
+            alert("Amount cannot be null");
+            }
+
+    });
+</script>
+}
